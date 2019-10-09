@@ -1,0 +1,22 @@
+﻿<div style="background-color:lightcyan;padding:10px;margin:10px">
+    <p>@Title</p>
+    <div>
+        @ChildContent
+    </div>
+    <button @onclick="OnYes">Clicky</button>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+    private void OnYes()
+    {
+        Console.WriteLine("Write to the console in C#! 'Yes' button was selected.");
+        Title += ".";
+    }
+}
