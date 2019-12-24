@@ -11,7 +11,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Publish'
+  buildConfiguration: 'Release'
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
@@ -30,11 +30,12 @@ steps:
 - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
   artifact: drop
 
-- task: AzureWebApp@1
+- task: AzureRmWebAppDeployment@4
   inputs:
-    azureSubscription: 'Swampnet(36659b06-e93e-4a9b-9729-65e952fc95c4)'
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Swampnet (36659b06-e93e-4a9b-9729-65e952fc95c4)'
     appType: 'webAppLinux'
-    appName: 'example-blazor'
-    package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    runtimeStack: 'DOTNETCORE|3.0'
-    startUpCommand: 'dotnet Swampnet.Examples.BlazorApp.dll'
+    WebAppName: 'example-blazor'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    RuntimeStack: 'DOTNETCORE|3.0'
+    StartupCommand: 'dotnet Swampnet.Examples.BlazorApp.dll'
