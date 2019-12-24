@@ -36,6 +36,6 @@ steps:
     azureSubscription: 'Swampnet (36659b06-e93e-4a9b-9729-65e952fc95c4)'
     appType: 'webAppLinux'
     WebAppName: 'example-blazor'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     RuntimeStack: 'DOTNETCORE|3.0'
     StartupCommand: 'dotnet Swampnet.Examples.BlazorApp.dll'
