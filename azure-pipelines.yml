@@ -14,21 +14,31 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
-
-
-- task: ArchiveFiles@2
-  displayName: 'Archive files'
+- task: DotNetCoreCLI@1
+  displayName: Restore
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/Swampnet.Examples.BlazorApp/bin/Release/netcoreapp3.0'
-    includeRootFolder: false
-    archiveType: zip
-    archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    replaceExistingArchive: true
+    command: restore
+    projects: '$(Parameters.RestoreBuildProjects)'
 
-- publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-  artifact: drop
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: '$(Parameters.RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+    feedsToUse: config
+
+- task: DotNetCoreCLI@1
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: true     
+    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    zipAfterPublish: True
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
 
 - task: AzureWebApp@1
   inputs:
