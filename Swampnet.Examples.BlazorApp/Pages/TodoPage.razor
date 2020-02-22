@@ -1,0 +1,13 @@
+﻿@page "/todo"
+
+<h3>Todo</h3>
+
+<TodoList Todos="@todos"/>
+
+@code {
+    IList<Todo> todos = new List<Todo>() { 
+        new Todo() { Text = "Item ONE" },
+        new Todo() { Text = "Item TWO" },
+        new Todo() { Text = "Item THREE" }
+    };
+}

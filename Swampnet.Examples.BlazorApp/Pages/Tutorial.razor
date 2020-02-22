@@ -1,0 +1,34 @@
+﻿@using Data;
+@page "/tutorial"
+
+ms documentation <a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/components?view=aspnetcore-3.1">here</a>
+
+<hr />
+
+<HeadingComponent Title="Some title"></HeadingComponent>
+
+<hr />
+
+<EditForm Model="@exampleModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="name" @bind-Value="exampleModel.Name" />
+
+    <button type="submit">Submit</button>
+
+    <hr/>
+
+    <span>@message</span>
+</EditForm>
+
+@code {
+    private ExampleModel exampleModel = new ExampleModel();
+    private string message;
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+        message = "Valid - " + DateTime.Now.ToLongTimeString();
+    }
+}
